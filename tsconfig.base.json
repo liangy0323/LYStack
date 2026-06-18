@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    // 严格模式：底座的类型纪律红线
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+
+    // 未使用检查交给 ESLint（支持 ^_ 忽略，更灵活）
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  }
+}

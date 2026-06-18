@@ -1,0 +1,73 @@
+<script setup lang="ts">
+/**
+ * 导入模块
+ */
+import { ref } from 'vue';
+
+/**
+ * 导入工具类
+ */
+import { createRequestSeq, isDef } from '@repo/shared/utils';
+
+/**
+ * 最小示例：仅为证明底座可运行，且应用能正常消费 @repo/shared。
+ * 刻意不引入任何 UI 框架——底座只提供架构骨架，UI 由使用者自选接入。
+ */
+const count = ref(0);
+const nextSeq = createRequestSeq();
+const lastSeq = ref<number | null>(null);
+
+function increment(): void {
+  count.value += 1;
+  lastSeq.value = nextSeq();
+}
+</script>
+
+<template>
+  <main class="app">
+    <h1>LYStack</h1>
+    <p class="subtitle">构建工具无关的企业级 Vue3 Monorepo 底座</p>
+
+    <section class="card">
+      <p>当前由 <strong>Vite</strong> 构建（SPA）</p>
+      <button type="button" @click="increment">count = {{ count }}</button>
+      <p v-if="isDef(lastSeq)" class="hint">
+        来自 @repo/shared 的请求序号：{{ lastSeq }}
+      </p>
+    </section>
+  </main>
+</template>
+
+<style scoped>
+.app {
+  max-width: 640px;
+  margin: 64px auto;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+.subtitle {
+  color: #666;
+}
+.card {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
+button {
+  padding: 8px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+}
+button:hover {
+  background: #f0f0f0;
+}
+.hint {
+  margin-top: 12px;
+  color: #999;
+  font-size: 13px;
+}
+</style>

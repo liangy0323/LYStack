@@ -1,0 +1,14 @@
+import { defineViteConfig, resolveRoot } from '@repo/build-config/vite';
+
+/**
+ * 应用只声明「构建什么」，不关心「用什么工具」。
+ * 所有 Vite 细节都被关进 @repo/build-config 的 adapter，
+ * 应用层保持构建工具无关——这正是底座可插拔的体现。
+ */
+export default defineViteConfig({
+  kind: 'spa',
+  appName: 'example-vite',
+  root: resolveRoot(import.meta.url),
+  entry: 'index.html',
+  port: 5173,
+});

@@ -1,0 +1,34 @@
+{
+  "name": "@repo/build-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "构建工具无关的配置抽象层：统一入口契约 + Vite / Rsbuild adapter",
+  "exports": {
+    ".": "./src/index.ts",
+    "./vite": "./src/adapters/vite/index.ts",
+    "./rsbuild": "./src/adapters/rsbuild/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@repo/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-image-compress": "catalog:",
+    "@rsbuild/plugin-vue": "catalog:",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "compression-webpack-plugin": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  },
+  "peerDependencies": {
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-image-compress": "catalog:",
+    "compression-webpack-plugin": "catalog:",
+    "vite": "catalog:"
+  }
+}

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="<%= assetPrefix %>/favicon.ico" />
+    <% styleUrlList.forEach(function (href) { %>
+    <link rel="stylesheet" href="<%= href %>" />
+    <% }) %> <% scriptUrlList.forEach(function (src) { %>
+    <script src="<%= src %>"></script>
+    <% }) %>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

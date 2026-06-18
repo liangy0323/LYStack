@@ -1,0 +1,14 @@
+import { defineRsbuildConfig, resolveRoot } from '@repo/build-config/rsbuild';
+
+/**
+ * 应用只声明「构建什么」，不关心「用什么工具」。
+ * 所有 Rsbuild 细节都被关进 @repo/build-config 的 adapter，
+ * 应用层保持构建工具无关——同一份中立选项，换 adapter 即可切换构建工具。
+ */
+export default defineRsbuildConfig({
+  kind: 'spa',
+  appName: 'example-rsbuild',
+  root: resolveRoot(import.meta.url),
+  entry: 'src/main.ts',
+  port: 5273,
+});
