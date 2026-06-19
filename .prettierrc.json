@@ -1,8 +1,10 @@
 {
-  "semi": true,
-  "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 80,
   "tabWidth": 2,
-  "endOfLine": "lf"
+  "semi": true,
+  "printWidth": 120,
+  "singleQuote": true,
+  "quoteProps": "as-needed",
+  "endOfLine": "auto",
+  "arrowParens": "always",
+  "htmlWhitespaceSensitivity": "css"
 }

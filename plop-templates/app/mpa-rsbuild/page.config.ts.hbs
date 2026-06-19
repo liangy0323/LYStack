@@ -1,0 +1,20 @@
+/**
+ * 导入类型声明
+ */
+import type { PageEntry } from '@repo/build-config/rsbuild';
+
+/**
+ * 多入口唯一真相源。
+ *
+ * 构建侧只读这份清单决定入口，不扫描目录。登记了的页面才会成为 entry，
+ * 每个 name 既是入口名也是产出的 html 文件名。新增页面由 `pnpm new:page`
+ * 在 PLOP_INJECT_PAGE 锚点处注入条目，请勿删除该锚点。
+ */
+export const pages: PageEntry[] = [
+  {
+    name: 'index',
+    entry: './src/pages/index/main.ts',
+    title: 'LYStack · 首页',
+  },
+  /* PLOP_INJECT_PAGE */
+];

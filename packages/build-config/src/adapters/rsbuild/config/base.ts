@@ -13,6 +13,7 @@ import { pluginVue } from '@rsbuild/plugin-vue';
  * 导入工具类
  */
 import { getScriptUrlList, getStyleUrlList } from '../utils/html.ts';
+import { buildPublicEnvDefine, loadPublicEnv } from '../../../utils/env.ts';
 
 /**
  * 导入类型声明
@@ -26,10 +27,7 @@ import type { ResolvedEntry } from '../utils/entry.ts';
  *
  * 应用不传 htmlTemplate 时回退到这份模板，统一注入 assetPrefix、外部脚本与样式。
  */
-const DEFAULT_TEMPLATE_PATH: string = resolve(
-  fileURLToPath(import.meta.url),
-  '../../template/index.html',
-);
+const DEFAULT_TEMPLATE_PATH: string = resolve(fileURLToPath(import.meta.url), '../../template/index.html');
 
 /**
  * 生成 Rsbuild 基础配置。
@@ -42,11 +40,7 @@ const DEFAULT_TEMPLATE_PATH: string = resolve(
  * @param envMode 当前构建环境
  * @returns Rsbuild 基础配置
  */
-export const getBaseConfig = (
-  options: AppBuildOptions,
-  resolved: ResolvedEntry,
-  envMode: EnvMode,
-): RsbuildConfig => {
+export function getBaseConfig(options: AppBuildOptions, resolved: ResolvedEntry, envMode: EnvMode): RsbuildConfig {
   const { root, html, htmlTemplate } = options;
   const { entry, titleMap, pageAssetMap } = resolved;
 
@@ -55,17 +49,19 @@ export const getBaseConfig = (
    */
   const isDev = envMode === 'development';
 
+  /**
+   * 加载公共环境快照：筛出 PUBLIC_ 前缀变量并聚合 APP_ENV，
+   * 经 __PUBLIC_ENV__ 注入客户端，业务侧统一经 @repo/shared/env 读取。
+   */
+  const publicEnv = loadPublicEnv(root, envMode);
+
   return {
     /**
      * 与输入源代码相关的选项
      */
     source: {
       entry,
-      define: {
-        // 把当前应用环境注入客户端，业务侧统一经 @repo/shared/env 读取 process.env.APP_ENV，
-        // 不直接耦合构建工具。NODE_ENV 由 Rsbuild 自动注入，无需手动定义。
-        'process.env.APP_ENV': JSON.stringify(envMode),
-      },
+      define: buildPublicEnvDefine(publicEnv),
     },
 
     /**
@@ -116,12 +112,8 @@ export const getBaseConfig = (
         const pageAssets = pageAssetMap[entryName];
         return {
           assetPrefix: options.assetPrefix ?? '',
-          scriptUrlList: getScriptUrlList(html, envMode).concat(
-            pageAssets?.scripts ?? [],
-          ),
-          styleUrlList: getStyleUrlList(html, envMode).concat(
-            pageAssets?.styles ?? [],
-          ),
+          scriptUrlList: getScriptUrlList(html, envMode).concat(pageAssets?.scripts ?? []),
+          styleUrlList: getStyleUrlList(html, envMode).concat(pageAssets?.styles ?? []),
         };
       },
     },
@@ -131,4 +123,4 @@ export const getBaseConfig = (
      */
     plugins: [pluginVue()],
   };
-};
+}

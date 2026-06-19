@@ -1,11 +1,6 @@
 /// <reference types="@rsbuild/core/types" />
 
-declare module '*.vue' {
-  import type { DefineComponent } from 'vue';
-  const component: DefineComponent<
-    Record<string, never>,
-    Record<string, never>,
-    unknown
-  >;
-  export default component;
-}
+/**
+ * 通用声明（*.vue、环境变量类型等）已上沉到仓库根 env.d.ts，
+ * 经 tsconfig.json 的 include 共享，此处只保留 Rsbuild 专属的类型引用。
+ */

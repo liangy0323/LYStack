@@ -28,6 +28,9 @@ catalog:
   # --- 任务编排 ---
   turbo: ^2.3.3
 
+  # --- 脚手架：子包 / 子页面代码生成（pnpm new:app / new:page）---
+  plop: ^4.0.5
+
   # --- 代码规范 ---
   eslint: ^9.17.0
   '@eslint/js': ^9.17.0
@@ -37,3 +40,9 @@ catalog:
   '@vue/eslint-config-prettier': ^10.1.0
   prettier: ^3.4.2
   globals: ^15.13.0
+
+  # --- Git 提交工作流：提交前 lint + 提交信息规范校验 ---
+  husky: ^9.1.7
+  lint-staged: ^17.0.7
+  '@commitlint/cli': ^21.0.2
+  '@commitlint/config-conventional': ^21.0.2

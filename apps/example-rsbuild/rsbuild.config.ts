@@ -10,5 +10,4 @@ export default defineRsbuildConfig({
   appName: 'example-rsbuild',
   root: resolveRoot(import.meta.url),
   entry: 'src/main.ts',
-  port: 5273,
 });

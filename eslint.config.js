@@ -25,10 +25,7 @@ export default tseslint.config(
       // 类型纪律红线：禁止 any（后端 DTO 等确需处用 inline disable 显式豁免）
       '@typescript-eslint/no-explicit-any': 'error',
       // 未使用变量：允许 ^_ 前缀占位
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 
@@ -56,16 +53,12 @@ export default tseslint.config(
       'no-restricted-syntax': [
         'error',
         {
-          selector:
-            "MemberExpression[object.object.name='process'][object.property.name='env']",
-          message:
-            '禁止在业务代码中直接读取 process.env，请使用 @repo/shared/env 的 getEnv()。',
+          selector: "MemberExpression[object.object.name='process'][object.property.name='env']",
+          message: '禁止在业务代码中直接读取 process.env，请使用 @repo/shared/env 的 getEnv()。',
         },
         {
-          selector:
-            "MemberExpression[object.property.name='env'][object.object.type='MetaProperty']",
-          message:
-            '禁止在业务代码中直接读取 import.meta.env，请使用 @repo/shared/env 的 getEnv()。',
+          selector: "MemberExpression[object.property.name='env'][object.object.type='MetaProperty']",
+          message: '禁止在业务代码中直接读取 import.meta.env，请使用 @repo/shared/env 的 getEnv()。',
         },
       ],
     },

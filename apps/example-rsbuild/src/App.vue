@@ -8,6 +8,7 @@ import { ref } from 'vue';
  * 导入工具类
  */
 import { createRequestSeq, isDef } from '@repo/shared/utils';
+import { getAppEnv, getEnv } from '@repo/shared/env';
 
 /**
  * 最小示例：仅为证明底座可运行，且应用能正常消费 @repo/shared。
@@ -16,6 +17,13 @@ import { createRequestSeq, isDef } from '@repo/shared/utils';
 const count = ref(0);
 const nextSeq = createRequestSeq();
 const lastSeq = ref<number | null>(null);
+
+/**
+ * env 全链路演示：经 @repo/shared/env 读取构建期注入的公共环境变量，
+ * 业务层永不直接碰 import.meta.env / process.env，切换 .env.* 即换值。
+ */
+const appEnv = getAppEnv();
+const apiBaseUrl = getEnv('PUBLIC_API_BASE_URL', '');
 
 function increment(): void {
   count.value += 1;
@@ -31,9 +39,14 @@ function increment(): void {
     <section class="card">
       <p>当前由 <strong>Rsbuild</strong> 构建（SPA）</p>
       <button type="button" @click="increment">count = {{ count }}</button>
-      <p v-if="isDef(lastSeq)" class="hint">
-        来自 @repo/shared 的请求序号：{{ lastSeq }}
+      <p v-if="isDef(lastSeq)" class="hint">来自 @repo/shared 的请求序号：{{ lastSeq }}</p>
+    </section>
+
+    <section class="card">
+      <p>
+        应用环境（APP_ENV）：<strong>{{ appEnv }}</strong>
       </p>
+      <p class="hint">接口基地址（PUBLIC_API_BASE_URL）：{{ apiBaseUrl }}</p>
     </section>
   </main>
 </template>

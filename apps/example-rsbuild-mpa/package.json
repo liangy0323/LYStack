@@ -9,6 +9,7 @@
     "build:test": "rsbuild build --env-mode test",
     "build:prod": "rsbuild build --env-mode production",
     "typecheck": "vue-tsc --noEmit",
+    "new:page": "plop --plopfile ../../plopfile.js page",
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
   },
   "dependencies": {

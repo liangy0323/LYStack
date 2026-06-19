@@ -206,13 +206,10 @@ const messageList = ref<ChatMessage[]>([]);
 
 ```ts
 // ✅ 依赖不变时有缓存，不会重复计算
-const filteredList = computed(() =>
-  messageList.value.filter((m) => m.role === 'user'),
-);
+const filteredList = computed(() => messageList.value.filter((m) => m.role === 'user'));
 
 // ❌ 每次渲染都重新执行，无缓存
-const getFilteredList = () =>
-  messageList.value.filter((m) => m.role === 'user');
+const getFilteredList = () => messageList.value.filter((m) => m.role === 'user');
 ```
 
 派生值必须优先使用 `computed`，不要用 `watch` / `watchEffect` 维护另一个派生 `ref`。
@@ -266,9 +263,7 @@ watch(
 
 ```vue
 <script lang="ts" setup>
-const activeUserList = computed(() =>
-  userList.value.filter((user) => user.active),
-);
+const activeUserList = computed(() => userList.value.filter((user) => user.active));
 </script>
 
 <template>
@@ -410,6 +405,6 @@ const { model } = storeToRefs(useChatStore());
 
 本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
 
-> 中和应泰前端组
+> LYStack · 不是脚手架，是架构地基
 
 用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。

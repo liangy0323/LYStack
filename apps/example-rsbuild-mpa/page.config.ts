@@ -21,5 +21,10 @@ export const pages: PageEntry[] = [
     entry: './src/pages/about/main.ts',
     title: 'LYStack · 关于',
   },
+  {
+    name: 'test',
+    entry: './src/pages/test/main.ts',
+    title: 'test',
+  },
   /* PLOP_INJECT_PAGE */
 ];

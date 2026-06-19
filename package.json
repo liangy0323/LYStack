@@ -12,19 +12,37 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "new:app": "plop app",
+    "new:page": "plop page",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
     "@eslint/js": "catalog:",
     "@vue/eslint-config-prettier": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-vue": "catalog:",
     "globals": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "plop": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
+    "vue": "catalog:",
     "vue-eslint-parser": "catalog:"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,cjs,mjs,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "engines": {
     "node": ">=18"

@@ -31,9 +31,7 @@ function increment(): void {
     <section class="card">
       <p>当前由 <strong>Vite</strong> 构建（SPA）</p>
       <button type="button" @click="increment">count = {{ count }}</button>
-      <p v-if="isDef(lastSeq)" class="hint">
-        来自 @repo/shared 的请求序号：{{ lastSeq }}
-      </p>
+      <p v-if="isDef(lastSeq)" class="hint">来自 @repo/shared 的请求序号：{{ lastSeq }}</p>
     </section>
   </main>
 </template>

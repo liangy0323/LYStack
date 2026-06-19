@@ -86,13 +86,9 @@ Axios 源码大量使用 `any`，扩展类型时遵循以下原则：
 
 ```ts
 export interface InterceptorHooks {
-  requestInterceptor?: (
-    config: InternalAxiosRequestConfig,
-  ) => InternalAxiosRequestConfig;
+  requestInterceptor?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
   requestInterceptorCatch?: (error: unknown) => unknown;
-  responseInterceptor?: (
-    response: AxiosResponse,
-  ) => AxiosResponse | Promise<AxiosResponse>;
+  responseInterceptor?: (response: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>;
   responseInterceptorCatch?: (error: unknown) => unknown;
 }
 ```
@@ -118,11 +114,7 @@ responseInterceptorCatch: (error: unknown) => {
 /**
  * 导入类型声明
  */
-import type {
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from 'axios';
+import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 /** 请求扩展选项 */
 export interface RequestOptions {
@@ -133,26 +125,19 @@ export interface RequestOptions {
 }
 
 /** 扩展请求配置 */
-export interface ExpandAxiosRequestConfig<
-  D = any,
-> extends AxiosRequestConfig<D> {
+export interface ExpandAxiosRequestConfig<D = any> extends AxiosRequestConfig<D> {
   interceptorHooks?: InterceptorHooks;
   requestOptions?: RequestOptions;
 }
 
 /** 扩展内部请求配置 */
-export interface ExpandInternalAxiosRequestConfig<
-  D = any,
-> extends InternalAxiosRequestConfig<D> {
+export interface ExpandInternalAxiosRequestConfig<D = any> extends InternalAxiosRequestConfig<D> {
   interceptorHooks?: InterceptorHooks;
   requestOptions?: RequestOptions;
 }
 
 /** 扩展响应配置 */
-export interface ExpandAxiosResponse<T = any, D = any> extends AxiosResponse<
-  T,
-  D
-> {
+export interface ExpandAxiosResponse<T = any, D = any> extends AxiosResponse<T, D> {
   config: ExpandInternalAxiosRequestConfig<D>;
 }
 ```
@@ -163,6 +148,6 @@ export interface ExpandAxiosResponse<T = any, D = any> extends AxiosResponse<
 
 本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
 
-> 中和应泰前端组
+> LYStack · 不是脚手架，是架构地基
 
 用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。

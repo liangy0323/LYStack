@@ -20,13 +20,7 @@ import { resolveMpaEntry, resolveSpaEntry } from './utils/entry.ts';
 /**
  * 导入类型声明
  */
-import type {
-  AppBuildOptions,
-  AppKind,
-  BuildAdapter,
-  EnvMode,
-  PageEntry,
-} from '../../types.ts';
+import type { AppBuildOptions, AppKind, BuildAdapter, EnvMode, PageEntry } from '../../types.ts';
 
 /**
  * 透传中立的 PageEntry 类型：应用层 page.config.ts 从 adapter 子路径
@@ -55,51 +49,53 @@ type RsbuildConfigExport = ReturnType<typeof defineConfig>;
  * dev / prod 各自叠加环境特定优化，由 Rsbuild 的 command 在运行期选择并 merge。
  * 应用层只声明中立的 AppBuildOptions，永不接触这套分层细节。
  */
-class RsbuildAdapter implements BuildAdapter {
-  readonly name = 'rsbuild' as const;
-
-  supports(kind: AppKind): boolean {
-    return kind === 'spa' || kind === 'mpa';
-  }
-
-  createConfig(options: AppBuildOptions): RsbuildConfigExport {
-    assertAppBuildOptions(options);
-
-    /**
-     * 用函数式配置接住 Rsbuild 注入的 command / envMode：
-     * command 决定叠加 dev 还是 prod，envMode 决定环境变量注入与产物指纹策略。
-     * envMode 优先取 CLI 的 --env-mode，回退到选项里的 envMode，再回退 development。
-     */
-    return defineConfig(({ command, envMode }) => {
-      const resolvedEnvMode: EnvMode =
-        (envMode as EnvMode | undefined) ?? options.envMode ?? 'development';
-
-      /**
-       * SPA 与 MPA 的差异收敛在「入口形状」上：SPA 单入口，
-       * MPA 是 PageEntry[] 按当前环境过滤后展开的多入口。
-       */
-      const resolved =
-        options.kind === 'spa'
-          ? resolveSpaEntry(options)
-          : resolveMpaEntry(
-              options.pages as PageEntry[],
-              options.root,
-              resolvedEnvMode,
-            );
-
-      const baseConfig = getBaseConfig(options, resolved, resolvedEnvMode);
-      const envConfig =
-        command === 'build' ? getProdConfig() : getDevConfig(options);
-
-      return mergeRsbuildConfig(baseConfig, envConfig);
-    });
-  }
+function supports(kind: AppKind): boolean {
+  return kind === 'spa' || kind === 'mpa';
 }
 
 /**
- * Rsbuild adapter 单例
+ * 将中立选项转换为 Rsbuild 原生配置。
+ * @param options 应用构建选项
+ * @returns Rsbuild 配置（函数式，接住 command / envMode）
  */
-export const rsbuildAdapter = new RsbuildAdapter();
+function createConfig(options: AppBuildOptions): RsbuildConfigExport {
+  assertAppBuildOptions(options);
+
+  /**
+   * 用函数式配置接住 Rsbuild 注入的 command / envMode：
+   * command 决定叠加 dev 还是 prod，envMode 决定环境变量注入与产物指纹策略。
+   * envMode 优先取 CLI 的 --env-mode，回退到选项里的 envMode，再回退 development。
+   */
+  return defineConfig(({ command, envMode }) => {
+    const resolvedEnvMode: EnvMode = (envMode as EnvMode | undefined) ?? options.envMode ?? 'development';
+
+    /**
+     * SPA 与 MPA 的差异收敛在「入口形状」上：SPA 单入口，
+     * MPA 是 PageEntry[] 按当前环境过滤后展开的多入口。
+     */
+    const resolved =
+      options.kind === 'spa'
+        ? resolveSpaEntry(options)
+        : resolveMpaEntry(options.pages as PageEntry[], options.root, resolvedEnvMode);
+
+    const baseConfig = getBaseConfig(options, resolved, resolvedEnvMode);
+    const envConfig = command === 'build' ? getProdConfig() : getDevConfig(options);
+
+    return mergeRsbuildConfig(baseConfig, envConfig);
+  });
+}
+
+/**
+ * Rsbuild adapter 单例。
+ *
+ * 用对象字面量 + satisfies 实现 BuildAdapter 契约：无实例状态、天然单例，
+ * 不必引入 class 这层命名空间。
+ */
+export const rsbuildAdapter = {
+  name: 'rsbuild',
+  supports,
+  createConfig,
+} satisfies BuildAdapter;
 
 /**
  * 应用层定义 Rsbuild 配置的入口糖：
@@ -107,9 +103,7 @@ export const rsbuildAdapter = new RsbuildAdapter();
  *   import { defineRsbuildConfig } from '@repo/build-config/rsbuild';
  *   export default defineRsbuildConfig({ kind: 'mpa', appName: '...', ... });
  */
-export function defineRsbuildConfig(
-  options: AppBuildOptions,
-): RsbuildConfigExport {
+export function defineRsbuildConfig(options: AppBuildOptions): RsbuildConfigExport {
   return rsbuildAdapter.createConfig(options);
 }
 

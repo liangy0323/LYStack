@@ -21,10 +21,7 @@ export type TitleMap = Record<string, string>;
 /**
  * 入口名 -> 该页面额外注入资源的映射，供 html.templateParameters 按页追加
  */
-export type PageAssetMap = Record<
-  string,
-  { scripts: string[]; styles: string[] }
->;
+export type PageAssetMap = Record<string, { scripts: string[]; styles: string[] }>;
 
 /**
  * 单/多入口归一化后的结果。
@@ -51,7 +48,7 @@ export interface ResolvedEntry {
  * @param options 应用构建选项
  * @returns 归一化入口结果
  */
-export const resolveSpaEntry = (options: AppBuildOptions): ResolvedEntry => {
+export function resolveSpaEntry(options: AppBuildOptions): ResolvedEntry {
   const entryPath = resolve(options.root, options.entry as string);
   const title = options.html?.title ?? options.appName;
   return {
@@ -59,7 +56,7 @@ export const resolveSpaEntry = (options: AppBuildOptions): ResolvedEntry => {
     titleMap: { index: title },
     pageAssetMap: {},
   };
-};
+}
 
 /**
  * 将中立的 PageEntry[] 展开为 Rsbuild 的多入口 source.entry。
@@ -72,11 +69,7 @@ export const resolveSpaEntry = (options: AppBuildOptions): ResolvedEntry => {
  * @param envMode 当前构建环境
  * @returns 归一化入口结果
  */
-export const resolveMpaEntry = (
-  pages: PageEntry[],
-  root: string,
-  envMode: EnvMode,
-): ResolvedEntry => {
+export function resolveMpaEntry(pages: PageEntry[], root: string, envMode: EnvMode): ResolvedEntry {
   const entry: EntryMap = {};
   const titleMap: TitleMap = {};
   const pageAssetMap: PageAssetMap = {};
@@ -94,4 +87,4 @@ export const resolveMpaEntry = (
   }
 
   return { entry, titleMap, pageAssetMap };
-};
+}

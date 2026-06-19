@@ -18,17 +18,17 @@ const CACHE_BUSTING_TIMESTAMP: number = Date.now();
  * @param envMode 当前构建环境
  * @returns 去空、带时间戳 query 的资源地址列表
  */
-const mergeWithTimestamp = (
+function mergeWithTimestamp(
   baseList: string[] | undefined,
   envMap: Partial<Record<EnvMode, string[]>> | undefined,
   envMode: EnvMode,
-): string[] => {
+): string[] {
   const envList = envMap?.[envMode] ?? [];
   return (baseList ?? [])
     .concat(envList)
     .filter((url): boolean => !!url)
     .map((url) => `${url}?t=${CACHE_BUSTING_TIMESTAMP}`);
-};
+}
 
 /**
  * 计算当前环境应注入的外部脚本地址列表。
@@ -36,16 +36,9 @@ const mergeWithTimestamp = (
  * @param envMode 当前构建环境
  * @returns 带时间戳的脚本地址列表
  */
-export const getScriptUrlList = (
-  html: HtmlInjectOptions | undefined,
-  envMode: EnvMode,
-): string[] => {
-  return mergeWithTimestamp(
-    html?.scriptUrlList,
-    html?.envScriptUrlMap,
-    envMode,
-  );
-};
+export function getScriptUrlList(html: HtmlInjectOptions | undefined, envMode: EnvMode): string[] {
+  return mergeWithTimestamp(html?.scriptUrlList, html?.envScriptUrlMap, envMode);
+}
 
 /**
  * 计算当前环境应注入的外部样式地址列表。
@@ -53,9 +46,6 @@ export const getScriptUrlList = (
  * @param envMode 当前构建环境
  * @returns 带时间戳的样式地址列表
  */
-export const getStyleUrlList = (
-  html: HtmlInjectOptions | undefined,
-  envMode: EnvMode,
-): string[] => {
+export function getStyleUrlList(html: HtmlInjectOptions | undefined, envMode: EnvMode): string[] {
   return mergeWithTimestamp(html?.styleUrlList, html?.envStyleUrlMap, envMode);
-};
+}

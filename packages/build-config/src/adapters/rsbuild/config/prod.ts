@@ -17,7 +17,7 @@ import type { RsbuildConfig } from '@rsbuild/core';
  * 仅按通用 vendor 维度切分。
  * @returns 生产环境 Rsbuild 配置
  */
-export const getProdConfig = (): RsbuildConfig => {
+export function getProdConfig(): RsbuildConfig {
   return {
     /**
      * 性能配置：自定义分包策略
@@ -92,4 +92,4 @@ export const getProdConfig = (): RsbuildConfig => {
       polyfill: 'off',
     },
   };
-};
+}

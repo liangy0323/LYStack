@@ -4,5 +4,5 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["../../env.d.ts", "src/**/*.ts"]
 }

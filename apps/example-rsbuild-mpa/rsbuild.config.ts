@@ -17,5 +17,4 @@ export default defineRsbuildConfig({
   appName: 'example-rsbuild-mpa',
   root: resolveRoot(import.meta.url),
   pages,
-  port: 5373,
 });

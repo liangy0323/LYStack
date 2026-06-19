@@ -27,21 +27,15 @@ export function assertAppBuildOptions(options: AppBuildOptions): void {
 
   if (kind === 'mpa') {
     if (!options.pages || options.pages.length === 0) {
-      throw new Error(
-        `[build-config] MPA 应用 "${appName}" 必须提供至少一个 page`,
-      );
+      throw new Error(`[build-config] MPA 应用 "${appName}" 必须提供至少一个 page`);
     }
     const names = new Set<string>();
     for (const page of options.pages) {
       if (!page.name || !page.entry) {
-        throw new Error(
-          `[build-config] MPA 应用 "${appName}" 存在缺少 name 或 entry 的页面`,
-        );
+        throw new Error(`[build-config] MPA 应用 "${appName}" 存在缺少 name 或 entry 的页面`);
       }
       if (names.has(page.name)) {
-        throw new Error(
-          `[build-config] MPA 应用 "${appName}" 存在重复的页面名 "${page.name}"`,
-        );
+        throw new Error(`[build-config] MPA 应用 "${appName}" 存在重复的页面名 "${page.name}"`);
       }
       names.add(page.name);
     }

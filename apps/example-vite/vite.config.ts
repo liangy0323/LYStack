@@ -10,5 +10,4 @@ export default defineViteConfig({
   appName: 'example-vite',
   root: resolveRoot(import.meta.url),
   entry: 'index.html',
-  port: 5173,
 });

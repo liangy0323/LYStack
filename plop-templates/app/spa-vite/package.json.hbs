@@ -1,0 +1,27 @@
+{
+  "name": "{{name}}",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "build:test": "vite build --mode test",
+    "build:prod": "vite build --mode production",
+    "typecheck": "vue-tsc --noEmit",
+    "clean": "node -e \"require('node:fs').rmSync('../../dist/{{name}}',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "@repo/shared": "workspace:*",
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@repo/build-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/tsconfig": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}
