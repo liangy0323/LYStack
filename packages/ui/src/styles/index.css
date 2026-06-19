@@ -1,0 +1,5 @@
+/* @repo/ui 样式总入口（barrel）
+   引入顺序：tokens → theme → base */
+@import './modules/tokens.css';
+@import './modules/theme.css';
+@import './modules/base.css';

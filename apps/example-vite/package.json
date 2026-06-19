@@ -12,7 +12,9 @@
     "clean": "node -e \"require('node:fs').rmSync('../../dist/example-vite',{recursive:true,force:true})\""
   },
   "dependencies": {
+    "@repo/services": "workspace:*",
     "@repo/shared": "workspace:*",
+    "@repo/ui": "workspace:*",
     "vue": "catalog:"
   },
   "devDependencies": {

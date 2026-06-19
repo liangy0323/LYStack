@@ -1,0 +1,28 @@
+{
+  "name": "@repo/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "纯 Vue3 通用 UI 组件与设计令牌（零 UI 框架依赖）",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles": {
+      "types": "./styles.d.ts",
+      "import": "./src/styles/index.css",
+      "style": "./src/styles/index.css",
+      "default": "./src/styles/index.css"
+    }
+  },
+  "scripts": {
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

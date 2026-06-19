@@ -1,0 +1,101 @@
+/* ============================================================
+   第二层 Semantic（语义令牌）
+   ------------------------------------------------------------
+   组件中唯一可引用的 CSS 变量层。
+   默认 :root = 亮色主题；切换至暗色只需加 [data-theme='dark']。
+   ============================================================ */
+
+/* ── 亮色主题（默认）── */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  /* 品牌色 */
+  --color-primary: var(--palette-blue-500);
+  --color-primary-hover: var(--palette-blue-600);
+  --color-primary-active: var(--palette-blue-700);
+  --color-primary-light: var(--palette-blue-50);
+  --color-primary-bg: var(--palette-blue-100);
+
+  /* 文字 */
+  --color-text-base: var(--palette-gray-900);
+  --color-text-regular: var(--palette-gray-700);
+  --color-text-secondary: var(--palette-gray-500);
+  --color-text-placeholder: var(--palette-gray-400);
+  --color-text-inverse: var(--palette-white);
+
+  /* 背景 */
+  --bg-color-body: var(--palette-gray-50);
+  --bg-color-panel: var(--palette-white);
+  --bg-color-hover: var(--palette-gray-100);
+  --bg-color-active: var(--palette-gray-200);
+
+  /* 边框 */
+  --border-color: var(--palette-gray-200);
+  --border-color-light: var(--palette-gray-100);
+
+  /* 状态色 */
+  --color-success: var(--palette-green-500);
+  --color-success-bg: var(--palette-green-50);
+  --color-warning: var(--palette-orange-500);
+  --color-warning-bg: var(--palette-orange-50);
+  --color-danger: var(--palette-red-500);
+  --color-danger-bg: var(--palette-red-50);
+
+  /* 阴影（亮色专用） */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-popover: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  /* 蒙层 */
+  --overlay-color: rgba(0, 0, 0, 0.45);
+
+  /* 涨跌色别名 */
+  --color-rise: var(--palette-rise);
+  --color-fall: var(--palette-fall);
+}
+
+/* ── 暗色主题 ── */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* 品牌色（暗色下调亮） */
+  --color-primary: var(--palette-blue-400);
+  --color-primary-hover: var(--palette-blue-300);
+  --color-primary-active: var(--palette-blue-200);
+  --color-primary-light: var(--palette-blue-900);
+  --color-primary-bg: var(--palette-blue-800);
+
+  /* 文字 */
+  --color-text-base: var(--palette-gray-200);
+  --color-text-regular: var(--palette-gray-300);
+  --color-text-secondary: var(--palette-gray-400);
+  --color-text-placeholder: var(--palette-gray-500);
+  --color-text-inverse: var(--palette-black);
+
+  /* 背景 */
+  --bg-color-body: var(--palette-gray-980);
+  --bg-color-panel: var(--palette-gray-900);
+  --bg-color-hover: var(--palette-gray-800);
+  --bg-color-active: var(--palette-gray-700);
+
+  /* 边框 */
+  --border-color: var(--palette-gray-700);
+  --border-color-light: var(--palette-gray-800);
+
+  /* 状态色（暗色下调亮背景） */
+  --color-success: var(--palette-green-500);
+  --color-success-bg: rgba(34, 197, 94, 0.12);
+  --color-warning: var(--palette-orange-500);
+  --color-warning-bg: rgba(249, 115, 22, 0.12);
+  --color-danger: var(--palette-red-500);
+  --color-danger-bg: rgba(239, 68, 68, 0.12);
+
+  /* 阴影（暗色专用） */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-popover: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+  /* 蒙层 */
+  --overlay-color: rgba(0, 0, 0, 0.65);
+}

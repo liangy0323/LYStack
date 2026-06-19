@@ -43,6 +43,16 @@ export default tseslint.config(
   },
 
   /**
+   * 组件目录内的 index.vue 是标准的 barrel 导出模式，豁免 multi-word 命名规则。
+   */
+  {
+    files: ['packages/**/components/**/index.vue'],
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
+  },
+
+  /**
    * 强制收口环境变量读取：禁止业务层直接出现 process.env / import.meta.env，
    * 一律走 @repo/shared/env。这从规则上保障「构建可插拔」不被破坏。
    * env 层自身（packages/shared/src/env/**）豁免。

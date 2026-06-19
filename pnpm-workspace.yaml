@@ -25,6 +25,9 @@ catalog:
   typescript: ^6.0.3
   '@types/node': ^22.10.2
 
+  # --- HTTP 请求库（@repo/services 依赖）---
+  axios: ^1.16.0
+
   # --- 任务编排 ---
   turbo: ^2.3.3
 

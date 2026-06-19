@@ -1,0 +1,71 @@
+/* DemoCard 组件样式（纯 CSS，零预处理依赖） */
+
+.demo-card {
+  background: var(--bg-color-panel);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-base);
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.demo-card--shadow {
+  box-shadow: var(--shadow-card);
+}
+
+.demo-card--hoverable {
+  cursor: pointer;
+}
+
+.demo-card--hoverable:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.demo-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-card__title {
+  flex: 1;
+  color: var(--color-text-base);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.demo-card__tag {
+  display: inline-block;
+  padding: 2px 8px;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border-radius: var(--radius-round);
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.demo-card__body {
+  color: var(--color-text-regular);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+.demo-card__description {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.demo-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-color-light);
+}
