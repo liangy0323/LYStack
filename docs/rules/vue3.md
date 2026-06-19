@@ -382,7 +382,7 @@ const router = useRouter();
 const { model } = storeToRefs(useChatStore());
 ```
 
-**Element Plus 样式**：组件 JS 显式按需 import，组件样式由 `unplugin-element-plus` 自动按需注入；各 app 只需在 `main.ts` 顶部导入 `@hrhg/ui/styles`，主题变量通过 `theme.scss` 覆盖 `--el-*` CSS 变量。
+**Element Plus 样式**：组件 JS 显式按需 import，组件样式由 `unplugin-element-plus` 自动按需注入；各 app 只需在 `main.ts` 顶部导入 `@repo/ui/styles`，主题变量通过语义令牌层（`theme.css`）覆盖 `--el-*` CSS 变量。
 
 ---
 
@@ -398,13 +398,3 @@ const { model } = storeToRefs(useChatStore());
 - **副作用管理**：watch 只处理副作用，异步 watch 必须处理竞态
 - **模板安全**：稳定 key、避免同元素 `v-if + v-for`、谨慎使用 `v-html`
 - **组件内业务逻辑不超过 20 行**，超过就抽 hook/helper
-
----
-
-## 合规声明（强制）
-
-本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
-
-> LYStack · 不是脚手架，是架构地基
-
-用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。

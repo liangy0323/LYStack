@@ -12,36 +12,43 @@
 
 ## 构建能力矩阵
 
-| 构建工具 | SPA         | MPA         |
-| -------- | ----------- | ----------- |
-| Vite     | ✅          | 🚧 Roadmap  |
-| Rsbuild  | 🚧 第二阶段 | 🚧 第二阶段 |
+| 构建工具 | SPA | MPA        |
+| -------- | --- | ---------- |
+| Vite     | ✅  | 🚧 Roadmap |
+| Rsbuild  | ✅  | ✅         |
 
 > MPA 默认由 Rsbuild 承载——Rspack 的 js-first 入口模型 + TS 可编程的 PageConfig 契约天生适合多页场景。Vite 是 html-first 心智，其 MPA 支持需要一层 html 生成翻译层，已列入 roadmap。详见后续技术文章。
 
 ## 技术栈
 
-| 类别     | 技术                               |
-| -------- | ---------------------------------- |
-| 框架     | Vue 3.5 + TypeScript 5.x（strict） |
-| 构建     | Vite 6（Rsbuild 第二阶段）         |
-| 包管理   | pnpm 9.x workspace + catalog       |
-| 任务编排 | Turborepo 2.x                      |
-| 代码规范 | ESLint 9 flat + Prettier           |
-| UI       | 无（由使用者自选接入）             |
+| 类别       | 技术                                 |
+| ---------- | ------------------------------------ |
+| 框架       | Vue 3.5 + TypeScript 6（strict）     |
+| 构建       | Vite 8 / Rsbuild 2（可插拔 adapter） |
+| HTTP       | Axios 1.16（多实例 + 依赖反转）      |
+| 包管理     | pnpm 9.x workspace + catalog         |
+| 任务编排   | Turborepo 2.x                        |
+| 代码规范   | ESLint 9 flat + Prettier 3           |
+| 提交工作流 | husky 9 + commitlint + lint-staged   |
+| UI         | 无（由使用者自选接入）               |
 
 ## 项目结构
 
 ```
 LYStack/
 ├── apps/
-│   └── example-vite/      # 最小示例：Vite SPA，证明底座可运行
+│   ├── example-vite/         # 示例：Vite SPA
+│   ├── example-rsbuild/      # 示例：Rsbuild SPA
+│   └── example-rsbuild-mpa/  # 示例：Rsbuild MPA
 ├── packages/
-│   ├── build-config/      # 构建抽象层：统一入口契约 + vite/rsbuild adapter
-│   └── shared/            # 构建无关共享层：env / utils / types / constants
-├── pnpm-workspace.yaml    # workspace + catalog 版本单一真相源
-├── turbo.json             # 任务编排
-└── tsconfig.base.json     # 共享 TS 严格配置
+│   ├── build-config/         # 构建抽象层：统一入口契约 + vite/rsbuild adapter
+│   ├── shared/               # 构建无关共享层：env / utils / types / constants
+│   ├── services/             # HTTP 层：Axios 工厂 + 多实例 + 认证依赖反转
+│   └── ui/                   # 组件 + 样式（纯 CSS + CSS 变量主题）
+├── plop-templates/          # new:app / new:page 代码生成模板
+├── pnpm-workspace.yaml      # workspace + catalog 版本单一真相源
+├── turbo.json               # 任务编排
+└── tsconfig.base.json       # 共享 TS 严格配置
 ```
 
 ## 快速开始
@@ -62,9 +69,14 @@ pnpm lint
 
 ## Roadmap
 
-- [ ] Rsbuild adapter（SPA + MPA）
+- [x] Rsbuild adapter（SPA + MPA）
+- [x] services 依赖反转层（HTTP + 认证注入）
+- [x] husky + commitlint + lint-staged
 - [ ] Vite MPA 支持（统一 PageConfig 入口契约的 html 翻译层）
-- [ ] services 依赖反转层（HTTP + 认证注入）
 - [ ] 可选认证适配层
 - [ ] 测试体系（Vitest）+ CI
-- [ ] husky + commitlint + lint-staged
+- [ ] 离线缓存（待原始项目实战验证后整合）
+
+## 许可证
+
+[MIT](./LICENSE)

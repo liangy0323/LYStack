@@ -18,7 +18,7 @@
 | 引擎类             | PascalCase + `Engine`         | `SseEngine`                          |
 | CSS 变量           | `--<语义分类>-<属性>`         | `--color-primary`                    |
 | CSS 类名           | kebab-case                    | `chat-message-item`                  |
-| Pinia 持久化 key   | `__AI_PINIA_<NAME>__`         | `__AI_PINIA_CHAT__`                  |
+| Pinia 持久化 key   | `__<APP>_PINIA_<NAME>__`      | `__LYSTACK_PINIA_USER__`             |
 | 事件总线           | `EVENT_<动词>_<名词>`         | `EVENT_STOP_CHAT_STREAM`             |
 
 ---
@@ -211,8 +211,8 @@ export const API_UPLOAD_FILE = '/api/file/upload';
 ### 存储 key：带语义前缀，双下划线包裹
 
 ```ts
-export const STORAGE_TOKEN_KEY = '__AI_TOKEN__';
-export const STORAGE_USER_KEY = '__AI_USER__';
+export const STORAGE_TOKEN_KEY = '__LYSTACK_TOKEN__';
+export const STORAGE_USER_KEY = '__LYSTACK_USER__';
 ```
 
 ### 配置常量：按语义分组
@@ -368,13 +368,3 @@ desc → description
 | `getUser` 返回 `User[]`    | 函数名和返回值矛盾         | `getUserList` 或 `fetchUserList`      |
 | `check()` 返回布尔值       | 缺少 is/has 前缀           | `isValid()`、`hasPermission()`        |
 | `msg` 和 `message` 混用    | 项目内缩写不统一           | 选定一种，全项目统一                  |
-
----
-
-## 合规声明（强制）
-
-本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
-
-> LYStack · 不是脚手架，是架构地基
-
-用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。

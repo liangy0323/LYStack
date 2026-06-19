@@ -164,13 +164,3 @@ export const getUserInfo = async (): Promise<UserInfo> => { ... };
 | `packages/services/src/types/` | 服务层 / 拦截器相关类型     | 服务层共用 |
 | `apps/<app>/src/types/`        | 子应用独有业务类型          | 单个应用   |
 | `apps/<app>/env.d.ts`          | 环境变量扩展、`*.vue` 声明  | 单个应用   |
-
----
-
-## 合规声明（强制）
-
-本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
-
-> LYStack · 不是脚手架，是架构地基
-
-用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。

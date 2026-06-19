@@ -120,17 +120,17 @@ apps/<name>/
 本文件只描述**单个包的内部组织**。workspace 顶层拓扑如下：
 
 ```
-pc-client-web/
+LYStack/
 ├── apps/                  # 可独立构建部署的子应用
-│   ├── news/              # PC 资讯
-│   └── stock-risk/        # 股票风险
+│   ├── example-vite/        # SPA（Vite）
+│   ├── example-rsbuild/     # SPA（Rsbuild）
+│   └── example-rsbuild-mpa/ # MPA（Rsbuild）
 ├── packages/              # 跨应用共享包
-│   ├── bridge/           # 客户端 Bridge 能力封装（CEF 原生方法适配） @hrhg/bridge
-│   ├── build-config/     # 共享 Rsbuild 构建配置 @hrhg/build-config
-│   ├── services/         # 共享 HTTP 服务层 @hrhg/services
-│   ├── shared/           # 跨端共用类型 / 工具 @hrhg/shared
-│   └── ui/               # 共享 UI 组件与样式 @hrhg/ui
-├── docs/                  # 文档与规范（rules/、env.md 等）
+│   ├── build-config/     # 构建契约 + Vite/Rsbuild adapter  @repo/build-config
+│   ├── services/         # 共享 HTTP 服务层（Axios 工厂）   @repo/services
+│   ├── shared/           # env / 常量 / 工具 / 共享类型      @repo/shared
+│   └── ui/               # 共享 UI 组件与样式               @repo/ui
+├── docs/                  # 文档与规范（rules/、vite.md、rsbuild.md 等）
 └── turbo.json             # Turborepo 任务编排
 ```
 
@@ -169,20 +169,10 @@ import * as API from './api';
 /**
  * 导入类型声明
  */
-import type { LoginParams, LoginResponse } from '@hrhg/shared';
+import type { LoginParams, LoginResponse } from '@repo/shared';
 
 /** 用户登录 */
 export const login = (params: LoginParams) => {
   return serviceCms.post<LoginResponse, LoginParams>(API.API_LOGIN, params);
 };
 ```
-
----
-
-## 合规声明（强制）
-
-本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
-
-> LYStack · 不是脚手架，是架构地基
-
-用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。

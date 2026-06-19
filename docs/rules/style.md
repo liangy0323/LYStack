@@ -2,26 +2,27 @@
 
 ## 设计令牌体系（两层架构）
 
-令牌集中定义在 `packages/ui/src/styles/modules/`，采用 **Palette + Semantic 两层架构**，支持 `data-theme` 主题切换。`@hrhg/ui` 通过 `./styles` 导出统一入口，各 app 在构建配置中引入。
+令牌集中定义在 `packages/ui/src/styles/modules/`，采用 **Palette + Semantic 两层架构**，支持 `data-theme` 主题切换。`@repo/ui` 通过 `./styles` 导出统一入口（`index.css`），各 app 在入口处引入。
 
-### 双主题与 CEF 注入机制
+> 底座样式用**纯 CSS + CSS 变量**实现，不依赖 SCSS——保证零预处理依赖、构建工具无关。业务项目若需要 SCSS，可自行在应用层引入，不影响底座令牌体系。
 
-本项目运行在 CEF（Chromium Embedded Framework）客户端内。客户端会把**当前主题名注入到 `window.THEME_NAME`，取值为 `'black' | 'white'`**，bridge 层据此同步到 `html[data-theme]`。因此：
+### 双主题机制
 
-- 主题名固定为 `black` / `white`（**不是 light/dark**），必须与客户端注入值一致。
-- `black` 为暗色主题（`color-scheme: dark`，主色蓝 `#1276e9`）；`white` 为亮色主题（`color-scheme: light`，主色红 `#f92317`）。
-- `window.THEME_NAME` 的类型声明在 `@hrhg/build-config/env`（`type ClientThemeName = 'black' | 'white'`），全局可用。
-- dev 环境可用 `@hrhg/ui` 的 `ThemeToggle` 组件模拟客户端切换（直接改写 `window.THEME_NAME`）。
+主题通过 `html[data-theme]` 切换，取值为 `'light' | 'dark'`：
+
+- 默认 `:root`（等价 `[data-theme='light']`）为亮色主题（`color-scheme: light`）；`[data-theme='dark']` 为暗色主题。
+- 切换主题只需改写 `html` 上的 `data-theme` 属性，组件零改动。
+- 业务侧如何驱动 `data-theme`（用户手动切换、跟随系统 `prefers-color-scheme`、或由宿主环境注入）由应用层自行决定，底座只负责令牌定义与切换响应。
 
 ### 第一层 Palette（原始调色板）
 
-挂在 `:root`（`tokens.scss`），与主题无关的基础色阶，**仅供语义层引用，禁止在组件中直接使用**：
+挂在 `:root`（`tokens.css`），与主题无关的基础色阶，**仅供语义层引用，禁止在组件中直接使用**：
 
-```scss
+```css
 :root {
-  --palette-blue-500: #1276e9;
-  --palette-red-500: #f92317;
-  --palette-gray-900: #21242b;
+  --palette-blue-500: #3b82f6;
+  --palette-red-500: #ef4444;
+  --palette-gray-900: #1a1a1a;
   --palette-white: #ffffff;
   /* ... */
 }
@@ -29,35 +30,37 @@
 
 ### 第二层 Semantic（语义令牌）
 
-挂在 `html[data-theme='black'|'white']`（`theme.scss`），**组件中唯一可引用的层**。切换主题只需覆盖本层，业务组件零改动：
+挂在 `:root[data-theme='light']` / `[data-theme='dark']`（`theme.css`），**组件中唯一可引用的层**。切换主题只需覆盖本层，业务组件零改动：
 
-```scss
-html[data-theme='black'] {
-  color-scheme: dark;
+```css
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
   --color-primary: var(--palette-blue-500);
-  --color-text-base: var(--palette-gray-400);
-  --body-bg-color: var(--palette-black);
+  --color-text-base: var(--palette-gray-900);
+  --bg-color-body: var(--palette-gray-50);
   /* ... */
 }
 
-html[data-theme='white'] {
-  color-scheme: light;
-  --color-primary: var(--palette-red-500);
-  --color-text-base: var(--palette-gray-800);
-  --body-bg-color: var(--palette-white);
+[data-theme='dark'] {
+  color-scheme: dark;
+  --color-primary: var(--palette-blue-400);
+  --color-text-base: var(--palette-gray-200);
+  --bg-color-body: var(--palette-gray-980);
   /* ... */
 }
 ```
 
 ### 非颜色令牌（与主题无关，挂 `:root`）
 
-| 类别     | 令牌                               | 单位 | 说明                                         |
-| -------- | ---------------------------------- | ---- | -------------------------------------------- |
-| 字号     | `--font-size-xs/sm/base/lg/xl/2xl` | rem  | 基准 1rem=14px，跟随 `--font-scale` 动态缩放 |
-| 间距     | `--spacing-xs/sm/md/lg/xl/2xl`     | px   | 4/8/12/16/20/24px，不随字体缩放              |
-| 圆角     | `--radius-sm/md`                   | px   | 4/8px                                        |
-| 涨跌     | `--color-rise/fall`                | -    | 涨 `#fe0000` / 跌 `#02ab5d`                  |
-| 字体缩放 | `--font-scale`                     | 数值 | 全局字体缩放系数（运行时修改）               |
+| 类别 | 令牌                              | 单位 | 说明                           |
+| ---- | --------------------------------- | ---- | ------------------------------ |
+| 字号 | `--font-size-xs/sm/base/md/lg/xl` | rem  | 基准 1rem=14px                 |
+| 间距 | `--spacing-xs/sm/md/base/lg/xl`   | px   | 4/8/12/16/24/32px              |
+| 圆角 | `--radius-sm/base/md/lg/xl/round` | px   | 4/6/8/12/16px + 全圆           |
+| 阴影 | `--shadow-sm/base/md/lg`          | -    | 多级投影                       |
+| 过渡 | `--transition-fast/base`          | -    | 150ms / 200ms ease             |
+| 涨跌 | `--color-rise/fall`               | -    | 金融场景可选，中性底座默认保留 |
 
 ### 令牌使用规则
 
@@ -70,37 +73,38 @@ html[data-theme='white'] {
 
 **严禁**在组件（含 `<style scoped>`）中出现任何主题判断选择器，例如：
 
-```scss
-// ❌ 绝对禁止：在组件里硬编码主题选择器 + 裸色值
-:global(html[data-theme='black']) .theme-toggle {
+```css
+/* ❌ 绝对禁止：在组件里硬编码主题选择器 + 裸色值 */
+[data-theme='dark'] .theme-toggle {
   background: rgba(255, 255, 255, 0.16);
 }
 
-html[data-theme='white'] .xxx {
+[data-theme='light'] .xxx {
   color: #000;
 }
 ```
 
 正确做法——主题色值全部在令牌层切换，组件只引用一个语义变量：
 
-```scss
-// 1) Palette（tokens.scss）：加原始色阶
+```css
+/* 1) Palette（tokens.css）：加原始色阶 */
 :root {
   --palette-overlay-dark: rgba(0, 0, 0, 0.5);
   --palette-overlay-light: rgba(255, 255, 255, 0.16);
 }
 
-// 2) 语义层（theme.scss）：按主题映射
-html[data-theme='black'] {
-  --overlay-bg-color: var(--palette-overlay-light);
-}
-html[data-theme='white'] {
+/* 2) 语义层（theme.css）：按主题映射 */
+:root,
+:root[data-theme='light'] {
   --overlay-bg-color: var(--palette-overlay-dark);
+}
+[data-theme='dark'] {
+  --overlay-bg-color: var(--palette-overlay-light);
 }
 ```
 
-```scss
-// 3) 组件：只引用语义变量，零主题判断
+```css
+/* 3) 组件：只引用语义变量，零主题判断 */
 .theme-toggle {
   background: var(--overlay-bg-color);
 }
@@ -108,37 +112,40 @@ html[data-theme='white'] {
 
 强制条款：
 
-1. **组件样式禁止出现 `html[data-theme='xxx']`、`:global(...)` 等主题选择器**，主题判断只允许存在于 `theme.scss`。
+1. **组件样式禁止出现 `[data-theme='xxx']`、`:global(...)` 等主题选择器**，主题判断只允许存在于 `theme.css`。
 2. 需要随主题变化的颜色，**必须新增/复用语义令牌**，组件引用 `var(--xxx)`，禁止在组件里写两套色值。
-3. 新增语义令牌时，`black` 与 `white` 两个主题块**必须同时定义**，避免某主题下变量缺失。
-4. 语义令牌命名带语义前缀（如 `--overlay-bg-color`、`--panel-bg-color`），不得以具体色值或主题名命名。
+3. 新增语义令牌时，`light` 与 `dark` 两个主题块**必须同时定义**，避免某主题下变量缺失。
+4. 语义令牌命名带语义前缀（如 `--overlay-bg-color`、`--bg-color-panel`），不得以具体色值或主题名命名。
 
 ---
 
 ## 样式入口聚合
 
-`packages/ui/src/styles/index.scss` 作为统一入口，通过 `@use` 聚合各模块：
+`packages/ui/src/styles/index.css` 作为统一入口，通过 `@import` 聚合各模块：
 
-```scss
-@use './modules/tokens.scss'; // Palette + 非颜色令牌
-@use './modules/theme.scss'; // Semantic 语义层（black/white）
-@use './modules/base.scss'; // CSS reset + 全局 body 样式
-@use './modules/message.scss'; // ElMessage 主题覆盖
+```css
+@import './modules/tokens.css'; /* Palette + 非颜色令牌 */
+@import './modules/theme.css'; /* Semantic 语义层（light/dark）*/
+@import './modules/base.css'; /* CSS reset + 全局 body 样式 */
 ```
 
-Element Plus 组件样式由 `@hrhg/build-config` 内置的 `unplugin-element-plus` 在构建期按需注入。各 app 只需要在 `main.ts` 顶部导入 `@hrhg/ui/styles`，项目级主题变量在 `packages/ui/src/styles/modules/theme.scss` 中覆盖 `--el-*` CSS 变量；禁止再全量引入 `element-plus/theme-chalk/src/index.scss`。
+各 app 只需在入口（`main.ts` 或 `bootstrap`）顶部导入一次 `@repo/ui/styles`，全量令牌与主题即可生效。
 
 ---
 
 ## 技术栈组合
 
-**SCSS + BEM + CSS 变量**：
+**纯 CSS + CSS 变量 + BEM**：
 
-- **SCSS**：所有组件样式、嵌套、mixin 复用
-- **BEM**：类名命名规范，保证语义化与可维护性
-- **CSS 变量**：设计令牌（主题色、字号、间距、圆角），支持运行时主题切换
+- **CSS 变量**：设计令牌（主题色、字号、间距、圆角），支持运行时主题切换，零预处理依赖。
+- **BEM**：类名命名规范，保证语义化与可维护性。
+- 业务应用如需 SCSS / Tailwind 等方案，可在应用层自行引入，不影响底座令牌体系。
 
-> **强制约定**：所有样式统一用 SCSS + BEM 编写，**禁止使用任何原子类**（含自定义全局工具类）。高频样式组合通过 SCSS `@mixin` 复用，模板中只保留语义化 BEM 类。
+---
+
+# 业务应用样式规范（使用 SCSS 时）
+
+> 以下为**业务应用层**的样式编写规范。底座 `@repo/ui` 本身用纯 CSS，但业务项目普遍使用 SCSS——若你的应用引入 SCSS，建议遵循下面的 BEM + mixins 约定，保证可维护性。**禁止使用任何原子类**（含自定义全局工具类），高频样式组合通过 SCSS `@mixin` 复用。
 
 ---
 
@@ -324,13 +331,3 @@ Element Plus 组件样式由 `@hrhg/build-config` 内置的 `unplugin-element-pl
 ```
 
 > mixins.scss 无 CSS 输出，按需 `@use` 不会产生重复样式，因此**不进入 `index.scss` 入口聚合**。
-
----
-
-## 合规声明（强制）
-
-本次改动若**确实严格遵循了本规则文件的全部约定**，必须在回复的**结尾处**追加一行：
-
-> LYStack · 不是脚手架，是架构地基
-
-用于自检与确认规则已被实际执行。若有任何一条未遵守，则不得追加该声明。
