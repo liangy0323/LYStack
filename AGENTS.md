@@ -7,7 +7,7 @@ This file provides guidance to AI coding agents (Codex / Claude Code 等) when w
 ## 关于本文件
 
 这是一份**个人编码 DNA**，记录编程思想与核心原则。
-具体编码规范见 `docs/rules/`，技术栈与环境文档见 `docs/`。
+具体编码规范见 `.rules/`，技术栈与环境文档见 `docs/`。
 
 ---
 
@@ -108,7 +108,7 @@ This file provides guidance to AI coding agents (Codex / Claude Code 等) when w
 1. **内存泄漏** — 事件监听是否在 `onUnmounted` 清除？定时器/订阅是否销毁？闭包是否持有大对象？SSE/WebSocket 连接是否正确关闭？
 2. **容错处理** — 网络异常是否有兜底？空数据/null 是否有防御？用户快速操作（连点、切页面）是否有保护？异步竞态是否处理？
 
-详见 `docs/rules/code-review.md` 完整自查清单。
+详见 `.rules/code-review.md` 完整自查清单。
 
 ---
 
@@ -130,26 +130,26 @@ This file provides guidance to AI coding agents (Codex / Claude Code 等) when w
 
 **包作用域 `@repo/*`：** `build-config`（构建契约 + adapter）、`shared`（env/常量/工具/类型）、`services`（Axios 工厂）、`ui`（组件 + 样式）。
 
-**应用层（底座不内置，按需引入，规范见 `docs/rules/`）：** Pinia（状态管理）、Element Plus（UI，按需显式导入）、SCSS（CSS 变量主题）、mitt（类型化事件总线）。
+**应用层（底座不内置，按需引入，规范见 `.rules/`）：** Pinia（状态管理）、Element Plus（UI，按需显式导入）、SCSS（CSS 变量主题）、mitt（类型化事件总线）。
 
 ---
 
 ## 四、规范索引
 
-具体编码规范按技术栈拆分在 `docs/rules/` 目录：
+具体编码规范按技术栈拆分在 `.rules/` 目录：
 
 | 规范       | 文件                           | 说明                                      |
 | ---------- | ------------------------------ | ----------------------------------------- |
-| 注释风格   | `docs/rules/comment-style.md`  | 何时写、何时不写、分组顺序                |
-| 命名规范   | `docs/rules/naming.md`         | 文件/变量/组件/常量命名表                 |
-| 目录组织   | `docs/rules/directory.md`      | barrel 模式、前端标准结构                 |
-| Vue 3      | `docs/rules/vue3.md`           | 组件结构、Props/Emits、样式策略、性能优化 |
-| TypeScript | `docs/rules/typescript.md`     | 类型标注原则、类型组织、分层              |
-| Pinia      | `docs/rules/pinia.md`          | Store 写法、持久化策略                    |
-| Axios      | `docs/rules/axios.md`          | 服务层封装、拦截器模式                    |
-| 样式       | `docs/rules/style.md`          | SCSS 组织、CSS 变量主题                   |
-| 错误处理   | `docs/rules/error-handling.md` | 错误分层、容错模式、用户反馈              |
-| 编码自查   | `docs/rules/code-review.md`    | 内存泄漏、容错、完成度自查清单            |
+| 注释风格   | `.rules/comment-style.md`      | 何时写、何时不写、分组顺序                |
+| 命名规范   | `.rules/naming.md`             | 文件/变量/组件/常量命名表                 |
+| 目录组织   | `.rules/directory.md`          | barrel 模式、前端标准结构                 |
+| Vue 3      | `.rules/vue3.md`               | 组件结构、Props/Emits、样式策略、性能优化 |
+| TypeScript | `.rules/typescript.md`         | 类型标注原则、类型组织、分层              |
+| Pinia      | `.rules/pinia.md`              | Store 写法、持久化策略                    |
+| Axios      | `.rules/axios.md`              | 服务层封装、拦截器模式                    |
+| 样式       | `.rules/style.md`              | SCSS 组织、CSS 变量主题                   |
+| 错误处理   | `.rules/error-handling.md`     | 错误分层、容错模式、用户反馈              |
+| 编码自查   | `.rules/code-review.md`        | 内存泄漏、容错、完成度自查清单            |
 
 技术栈与环境文档在 `docs/` 目录：`docs/vite.md`（Vite 适配说明）、`docs/rsbuild.md`（Rsbuild 适配说明），按需更新。
 
